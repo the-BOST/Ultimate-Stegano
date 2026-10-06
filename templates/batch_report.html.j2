@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultimate Stegano — rapport général</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#171a23; --panel2:#1e222d; --border:#2a2f3c;
+    --fg:#e6e8ee; --muted:#8b93a7; --accent:#6ea8fe;
+    --high:#ff5c7a; --medium:#ffb020; --low:#56d364; --flag:#c678ff;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#f6f7fa; --panel:#fff; --panel2:#eef0f5; --border:#d8dbe4;
+      --fg:#1c1f27; --muted:#5c6475; --accent:#2b6fd6;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  header{padding:24px 20px;border-bottom:1px solid var(--border)}
+  h1{font-size:21px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px}
+  .layout{display:flex;min-height:calc(100vh - 86px)}
+  nav{width:280px;flex:0 0 280px;border-right:1px solid var(--border);
+    padding:12px;overflow:auto}
+  nav button{display:flex;justify-content:space-between;align-items:center;
+    gap:8px;width:100%;text-align:left;background:transparent;color:var(--fg);
+    border:1px solid transparent;border-radius:8px;padding:9px 11px;margin:2px 0;
+    cursor:pointer;font-size:13px}
+  nav button:hover{background:var(--panel2)}
+  nav button.active{background:var(--panel2);border-color:var(--border)}
+  nav .dot{width:9px;height:9px;border-radius:50%;flex:0 0 9px}
+  .d-hit{background:var(--flag)} .d-none{background:var(--muted)}
+  main{flex:1;padding:22px 24px;overflow:auto}
+  .panel{display:none} .panel.active{display:block}
+  h2{font-size:17px;margin:4px 0 14px;color:var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;margin-bottom:18px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:12px}
+  .card .k{color:var(--muted);font-size:11px;text-transform:uppercase}
+  .card .v{font-size:15px;font-weight:600;margin-top:3px;word-break:break-all}
+  .flagbox{background:color-mix(in srgb,var(--flag) 14%,transparent);
+    border:1px solid color-mix(in srgb,var(--flag) 45%,transparent);
+    border-radius:9px;padding:10px 13px;margin:5px 0}
+  .flag{font-family:ui-monospace,Menlo,monospace;color:var(--flag);
+    font-weight:700;word-break:break-all}
+  table{width:100%;border-collapse:collapse;background:var(--panel);
+    border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--border);
+    vertical-align:top;font-size:13px}
+  th{background:var(--panel2);text-transform:uppercase;color:var(--muted);font-size:11px}
+  tr:last-child td{border-bottom:none}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;
+    font-weight:600}
+  .high{background:color-mix(in srgb,var(--high) 22%,transparent);color:var(--high)}
+  .medium{background:color-mix(in srgb,var(--medium) 22%,transparent);color:var(--medium)}
+  .low{background:color-mix(in srgb,var(--low) 22%,transparent);color:var(--low)}
+  a{color:var(--accent)} code{font-family:ui-monospace,Menlo,monospace;
+    background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:12px}
+  .empty{color:var(--muted);font-style:italic}
+  .open{display:inline-block;margin-top:14px;padding:8px 14px;border-radius:8px;
+    background:var(--accent);color:#fff;text-decoration:none;font-weight:600;font-size:13px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>🔍 Ultimate Stegano — rapport général</h1>
+    <div class="sub">{{ files|length }} fichier(s) analysé(s) · {{ total_flags }}
+      flag(s) au total · généré {{ generated }}</div>
+  </header>
+  <div class="layout">
+    <nav id="nav">
+      {% for f in files %}
+      <button data-tab="t{{ loop.index }}" class="{{ 'active' if loop.first }}">
+        <span style="display:flex;align-items:center;gap:8px;overflow:hidden">
+          <span class="dot {{ 'd-hit' if f.flags else 'd-none' }}"></span>
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.name }}</span>
+        </span>
+        <span class="sub">{{ f.flags|length }}🚩</span>
+      </button>
+      {% endfor %}
+    </nav>
+    <main>
+      {% for f in files %}
+      <section class="panel {{ 'active' if loop.first }}" id="t{{ loop.index }}">
+        <h2>{{ f.name }}</h2>
+        <div class="grid">
+          <div class="card"><div class="k">Type</div><div class="v">{{ f.type }}</div></div>
+          <div class="card"><div class="k">Taille</div><div class="v">{{ f.size }}</div></div>
+          <div class="card"><div class="k">Entropie</div><div class="v">{{ f.entropy }}</div></div>
+          <div class="card"><div class="k">Findings</div><div class="v">{{ f.findings|length }}</div></div>
+          <div class="card"><div class="k">SHA-256</div><div class="v" style="font-size:11px">{{ f.sha256[:32] }}…</div></div>
+        </div>
+        {% if f.flags %}
+          <h3>🚩 Flags</h3>
+          {% for fl in f.flags %}<div class="flagbox"><span class="flag">{{ fl }}</span></div>{% endfor %}
+        {% else %}
+          <p class="empty">Aucun flag récupéré automatiquement.</p>
+        {% endif %}
+        <h3>📋 Findings</h3>
+        {% if f.findings %}
+        <table>
+          <tr><th>Catégorie</th><th>Détail</th><th>Confiance</th></tr>
+          {% for x in f.findings %}
+          <tr><td>{{ x.category }}</td><td>{{ x.detail }}</td>
+            <td><span class="badge {{ x.confidence }}">{{ x.confidence }}</span></td></tr>
+          {% endfor %}
+        </table>
+        {% else %}<p class="empty">Aucun finding.</p>{% endif %}
+        <a class="open" href="{{ f.report_rel }}">Ouvrir le rapport détaillé →</a>
+      </section>
+      {% endfor %}
+    </main>
+  </div>
+<script>
+  const nav = document.getElementById('nav');
+  nav.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-tab]');
+    if (!btn) return;
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+</script>
+</body>
+</html>

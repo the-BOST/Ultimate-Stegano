@@ -1,0 +1,40 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Analysis output
+output/
+
+# Wordlists (large / licensing) — NOT distributed, see README to obtain
+rockyou.txt
+*.rockyou
+wordlists/
+
+# Bundled external binaries (install system tools yourself; see CREDITS.md)
+tools/*
+!tools/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Logs (photorec, etc.)
+*.log
+
+# Sample / challenge inputs
+input/
+*.zip
+
+# Personal launcher (calls your machine-specific alias)
+start.sh
