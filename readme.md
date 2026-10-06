@@ -188,7 +188,8 @@ echo "flag{CTF{HTB{FCSC{" > word.txt
     │   ├── inconsistency_report.txt
     │   └── visual_filters/
     └── report.html
-    
+```
+
 🔍 Patterns de Détection CTF
 Configuration par défaut dans word.txt :
 
