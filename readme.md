@@ -16,6 +16,7 @@ cachées par stéganographie dans images, audio, vidéo et documents.
 
 ## 📁 Structure du Projet
 
+```
 ultimate-stegano/
 ├── ultimate-stegano.py # Script principal
 ├── word.txt # Liste de mots pour brute force
@@ -34,6 +35,7 @@ ultimate-stegano/
 ├── tools/ # Outils externes intégrés
 │ └── (binaires steghide, zsteg, etc.)
 └── templates/ # Templates de rapports
+```
 
 ## 🔧 Fonctionnalités (10+ features)
 
