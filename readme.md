@@ -193,6 +193,7 @@ echo "flag{CTF{HTB{FCSC{" > word.txt
 🔍 Patterns de Détection CTF
 Configuration par défaut dans word.txt :
 
+```
 flag{
 FLAG{
 CTF{
@@ -203,7 +204,7 @@ DGHACK{
 picoCTF{
 CyberTalents{
 GH{
-
+```
 
 
 ---
